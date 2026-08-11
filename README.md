@@ -148,6 +148,35 @@ Prácticas que combinan proyectos previos con validación de datos y manejo de e
 #### MySql
 
 - `conexionMysql.py` → Conecta a una base de datos MySQL local, consulta la versión del servidor e inserta un autor en la tabla `autores`.
+- `registroConsultasProductos.py` → Actividades: registro y gestión de productos en MySQL. Menú interactivo para agregar (con validación de nombre, categoría, precio y stock), listar en una tabla alineada con estado de stock ("OK" / "Bajo stock"), buscar por ID, modificar y eliminar productos, buscarlos por categoría y listar los productos críticos (stock < 5) con sus unidades faltantes.
+- `config.py` → Credenciales de conexión a MySQL (host, usuario y contraseña) utilizadas por `registroConsultasProductos.py`. Está excluido de Git para no exponer la contraseña.
+
+##### Configuración de MySQL
+
+Para que los scripts de conexión funcionen es necesario:
+
+1. Instalar el conector de Python:
+
+   ```bash
+   pip install mysql-connector-python
+   ```
+
+2. Crear la base de datos `tienda` y la tabla `producto`:
+
+   ```sql
+   CREATE DATABASE tienda;
+   USE tienda;
+
+   CREATE TABLE producto (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       nombre VARCHAR(100) NOT NULL,
+       categoria VARCHAR(58),
+       precio DECIMAL(10,2),
+       stock INT NOT NULL
+   );
+   ```
+
+3. Configurar las credenciales (host, usuario y contraseña) en el archivo `config.py`, ubicado en la misma carpeta que el script (`Conexiones/MySql/config.py`) e importado por `registroConsultasProductos.py`.
 
 ### Mi Web
 
@@ -161,4 +190,4 @@ Aplicación web básica desarrollada con Flask.
 
 Estos ejercicios forman parte del proceso de aprendizaje y pueden contener diferentes versiones o mejoras a medida que se adquiere más experiencia.
 
-**Última actualización:** 9 Agosto 2026
+**Última actualización:** 11 Agosto 2026
