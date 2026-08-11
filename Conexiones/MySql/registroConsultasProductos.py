@@ -1,7 +1,5 @@
 '''
-Actividad 1
-
-Registro y consulta de productos
+Actividad 1 - Registro y consulta de productos
 
 El usuario puede agregar nuevos productos al stock e consultar el listado completo desde la base de datos.
 
@@ -54,7 +52,7 @@ from config import DB_PASSWORD, DB_USER, DB_HOST
 # Función para conectar con la db
 def conectar():
     try:
-        return mysql.connector.connect(user='DB_USER', password='DB_PASSWORD', host='DB_HOST', database='tienda')
+        return mysql.connector.connect(user=DB_USER, password=DB_PASSWORD, host=DB_HOST, database='tienda')
     except Error as e:
         print(f"Error: {e}")
         return None
@@ -160,19 +158,184 @@ def buscar_productos_categoria(categoria):
     finally:
         conexion.close()
 
+'''
+Actividad 2 - Modificación y baja de productos
+
+Ampliación del sistema anterior el usuario puede actualizar el precio y stock de un producto, 
+o darlo de baja, siempre verificando que el ID exista antes de operar.
+
+CONSIGNA
+1. Reutiliza la función conectar() y listar_productos () de la Actividad 1.
+
+2. Crea una función buscar_por_id(id_producto) que:
+Ejecute un SELECT WHERE id=%s
+Devuelva los datos del producto si existe, o None si no existe
+
+3. Crea una función modificar_producto() que:
+Pida el ID al usuario (validar que sea entero con try/except)
+Use buscar por_id() para verificar que existe antes de continuar
+Muestre los datos actuales del producto
+Pida los nuevos valores de precio y stock
+Ejecute el UPDATE y confirme con commit()
+Muestre cuántas filas fueron modificadas con rowcount
+
+4. Crea una función eliminar_producto() que:
+Pida el ID al usuario (validar que sea entero)
+Use buscar por_id() para verificar que existe
+Pida confirmación al usuario antes de eliminar (s/h)
+Ejecute el DELETE solo si el usuario confirmó
+
+5. Integrá todo en un menú con while True que incluya las 4 operaciones: listar, agregar, modificar y eliminar.
+
+SALIDA ESPERADA (MODIFICAR)
+
+Ingresa el ID del producto: 2
+
+Datos actuales:
+
+    Nombre: Detergente
+    Precio: $1200.00
+    Stock: 3
+
+Nuevo precio: 1350
+Nuevo stock: 10
+
+Producto modificado correctamente. (1 fila afectada)
+
+Bonus: Agregar una función productos_criticos() que liste todos los productos con stock menor a 5 y muestre el
+total de unidades faltantes para llegar al minimo
+'''
+
+# Función para buscar un producto por ID
+def buscar_por_id(idproducto):
+    conexion = conectar()
+    if conexion is None:
+        raise ConnectionError("No se pudo conectar a la base de datos.")
+    try:
+        cursor = conexion.cursor()
+        sql = "SELECT id, nombre, categoria, precio, stock FROM producto WHERE id = %s"
+        cursor.execute(sql, (idproducto,))
+        return cursor.fetchone()
+    finally:
+        conexion.close()
+
+# Función para modificar un producto
+def modificar_producto():
+    try:
+        idproducto = int(input("Ingrese el ID del producto a modificar: "))
+    except ValueError:
+        print("Error: el ID debe ser un número entero.")
+        return
+    try:
+        producto = buscar_por_id(idproducto)
+    except ConnectionError:
+        return
+    if producto is None:
+        print("Producto no encontrado.")
+        return
+    print("Datos actuales:")
+    print(f"Nombre: {producto[1]}")
+    print(f"Precio: ${producto[3]}")
+    print(f"Stock: {producto[4]}")
+    try:
+        nuevo_precio = float(input("Ingrese el nuevo precio: "))
+        nuevo_stock = int(input("Ingrese el nuevo stock: "))
+    except ValueError:
+        print("Error: precio y stock deben ser números.")
+        return
+    if not math.isfinite(nuevo_precio) or nuevo_precio <= 0 or nuevo_stock <= 0:
+        print("Error: precio y stock deben ser números mayores a cero.")
+        return
+    conexion = conectar()
+    if conexion is None:
+        return
+    try:
+        cursor = conexion.cursor()
+        sql = "UPDATE producto SET precio = %s, stock = %s WHERE id = %s"
+        cursor.execute(sql, (nuevo_precio, nuevo_stock, idproducto))
+        conexion.commit()
+        print(f"Producto modificado correctamente. ({cursor.rowcount} fila(s) afectada(s))")
+    except Error as e:
+        print(f"Error: {e}")
+    finally:
+        conexion.close()
+
+# Función para eliminar un producto
+def eliminar_producto():
+    try:
+        idproducto = int(input("Ingrese el ID del producto a eliminar: "))
+    except ValueError:
+        print("Error: el ID debe ser un número entero.")
+        return
+    try:
+        producto = buscar_por_id(idproducto)
+    except ConnectionError:
+        return
+    if producto is None:
+        print("Producto no encontrado.")
+        return
+    confirmacion = input("¿Desea eliminar el producto? (s/n): ")
+    if confirmacion.strip().lower() in ("s", "si", "sí"):
+        conexion = conectar()
+        if conexion is None:
+            return
+        try:
+            cursor = conexion.cursor()
+            sql = "DELETE FROM producto WHERE id = %s"
+            cursor.execute(sql, (idproducto,))
+            conexion.commit()
+            print(f"Producto eliminado correctamente. ({cursor.rowcount} fila(s) afectada(s))")
+        except Error as e:
+            print(f"Error: {e}")
+        finally:
+            conexion.close()
+    else:
+        print("Eliminación cancelada.")
+
+# Función para ver los productos en estado crítico
+def productos_criticos():
+    conexion = conectar()
+    if conexion is None:
+        return
+    try:
+        cursor = conexion.cursor()
+        sql = "SELECT id, nombre, stock FROM producto WHERE stock < 5"
+        cursor.execute(sql)
+        productos = cursor.fetchall()
+        if not productos:
+            print("No hay productos en estado crítico.")
+            return
+        print("Productos críticos (stock < 5):")
+        total_faltante = 0
+        for id, nombre, stock in productos:
+            faltante = 5 - stock
+            total_faltante += faltante
+            print(f"{nombre}: {stock} unidades (faltan {faltante} para el mínimo)")
+        print(f"Total de unidades faltantes: {total_faltante}")
+    except Error as e:
+        print(f"Error: {e}")
+    finally:
+        conexion.close()
+
 # Función para mostrar el menú
 def menu():
     while True:
-        print("--- Menú ---\n1. Agregar producto\n2. Listar productos\n3. Buscar productos por categoría\n4. Salir")
+        print("--- Menú ---\n1. Agregar producto\n2. Listar productos\n3. Modificar producto\n4. Eliminar producto\n5. Buscar productos por categoría\n6. Productos críticos\n7. Salir")
         opcion = input("Ingrese una opción: ")
         if opcion == "1":
             validar_y_agregar_producto()
         elif opcion == "2":
             listar_productos()
         elif opcion == "3":
+            modificar_producto()
+        elif opcion == "4":
+            eliminar_producto()
+        elif opcion == "5":
             categoria = input("Ingrese la categoría a buscar: ").strip()
             buscar_productos_categoria(categoria)
-        elif opcion == "4":
+        elif opcion == "6":
+            productos_criticos()
+        elif opcion == "7":
             break
         else:
             print("Opción no válida. Inténtelo nuevamente.")
