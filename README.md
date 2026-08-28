@@ -178,7 +178,16 @@ Para que los scripts de conexión funcionen es necesario:
 
 3. Configurar las credenciales (host, usuario y contraseña) en el archivo `config.py`, ubicado en la misma carpeta que el script (`Conexiones/MySql/config.py`) e importado por `registroConsultasProductos.py`.
 
-### Mi Web
+### Fundamentos Web
+
+Práctica de desarrollo web (HTML, CSS y Flask).
+
+#### Archivos Explicativos
+
+- `archivo-estudio.html` → Guía práctica de HTML con Bootstrap 5, 18 secciones de etiquetas, buenas prácticas y ejercicios.
+- `archivo-estudio-comentado.html` → Guía de estudio de HTML donde cada etiqueta está comentada en español (estructura base, semántica, formularios, tablas, accesibilidad, Bootstrap y SEO).
+
+#### Mi Web
 
 Aplicación web básica desarrollada con Flask.
 
@@ -190,4 +199,4 @@ Aplicación web básica desarrollada con Flask.
 
 Estos ejercicios forman parte del proceso de aprendizaje y pueden contener diferentes versiones o mejoras a medida que se adquiere más experiencia.
 
-**Última actualización:** 11 Agosto 2026
+**Última actualización:** 28 Agosto 2026
