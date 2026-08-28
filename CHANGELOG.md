@@ -1,6 +1,23 @@
 # Changelog
 ---
 
+## [v1.4.0] - 2026-08-28
+
+#### Features
+
+- Agrego `Fundamentos Web`: carpeta `Archivos Explicativos` con `archivo-estudio.html` (guía práctica de HTML con Bootstrap 5) y traslado el proyecto `Mi Web` (app Flask) dentro de `Fundamentos Web`
+- Agrego `archivo-estudio-comentado.html`: guía de estudio de HTML con cada etiqueta comentada en español (18 secciones: estructura base, semántica, formularios, tablas, accesibilidad, Bootstrap y SEO)
+
+#### Fixes
+
+- Corrijo en `registroConsultasProductos.py` las credenciales de MySQL que se pasaban como strings literales (`'DB_USER'`, `'DB_PASSWORD'`, `'DB_HOST'`); ahora se usan las variables reales importadas de `config.py`
+
+#### Docs
+
+- Actualizo `README.md` con la nueva sección de Fundamentos Web y la reorganización de la carpeta Mi Web
+
+---
+
 ## [v1.3.0] - 2026-08-11
 
 #### Features
