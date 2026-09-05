@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquetación de un sitio web — Apunte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #172A60;
+    --navy-claro: #2C4390;
+    --naranja: #E98836;
+    --papel: #F1F3F7;
+    --blanco: #FFFFFF;
+    --tinta: #1B2233;
+    --tenue: #5B6478;
+    --linea: #D9DEE8;
+    --paso: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--tinta);
+    background: var(--papel);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ---------- Encabezado ---------- */
+  .cabecera {
+    background: var(--navy);
+    color: var(--blanco);
+    padding: 2.5rem var(--paso) 2rem;
+  }
+  .cabecera .interior { max-width: 1180px; margin: 0 auto; }
+  .cabecera h1 {
+    font-family: Poppins, system-ui, sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.75rem, 5vw, 2.75rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .cabecera p {
+    margin-top: 0.75rem;
+    color: #B9C3DE;
+    max-width: 60ch;
+  }
+  .regla { height: 4px; width: 64px; background: var(--naranja); margin-bottom: 1.25rem; }
+
+  /* Indicador de breakpoint: la página se explica a sí misma */
+  .medidor {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8125rem;
+  }
+  .medidor span {
+    border: 1px solid #3D4F84;
+    color: #8695BE;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+  }
+  .medidor span.activo {
+    background: var(--naranja);
+    border-color: var(--naranja);
+    color: #1A1206;
+    font-weight: 500;
+  }
+  .medidor .ancho { border: 0; color: #B9C3DE; padding-left: 0; }
+
+  /* ---------- Layout general ---------- */
+  .layout {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: var(--paso);
+    display: grid;
+    gap: 2rem;
+    grid-template-areas:
+      "indice"
+      "contenido";
+  }
+  .indice { grid-area: indice; }
+  .contenido { grid-area: contenido; min-width: 0; }
+
+  @media (min-width: 900px) {
+    .layout {
+      grid-template-columns: 230px minmax(0, 1fr);
+      grid-template-areas: "indice contenido";
+      gap: 3rem;
+      padding-top: 2.5rem;
+    }
+    .indice { position: sticky; top: 1.5rem; align-self: start; max-height: calc(100vh - 3rem); overflow-y: auto; }
+  }
+
+  /* ---------- Índice ---------- */
+  .indice nav {
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 4px;
+    padding: 1.25rem;
+  }
+  .indice h2 {
+    font-family: Poppins, sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+  }
+  .indice ol { list-style: none; counter-reset: item; font-family: Poppins, sans-serif; font-size: 0.875rem; }
+  .indice li { counter-increment: item; margin-bottom: 0.4rem; }
+  .indice a {
+    color: var(--tenue);
+    text-decoration: none;
+    display: flex;
+    gap: 0.5rem;
+    line-height: 1.35;
+  }
+  .indice a::before { content: counter(item) "."; color: var(--naranja); font-weight: 500; }
+  .indice a:hover, .indice a:focus-visible { color: var(--navy); }
+
+  /* ---------- Contenido ---------- */
+  section { margin-bottom: 3rem; scroll-margin-top: 1.5rem; }
+  section h2 {
+    font-family: Poppins, sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.25rem, 3.5vw, 1.625rem);
+    color: var(--navy);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--linea);
+  }
+  section h3 {
+    font-family: Poppins, sans-serif;
+    font-weight: 500;
+    font-size: 1.0625rem;
+    color: var(--navy-claro);
+    margin: 1.75rem 0 0.6rem;
+  }
+  p, ul, ol { max-width: 70ch; }
+  p { margin-bottom: 1rem; }
+  .contenido ul, .contenido ol { margin: 0 0 1rem 1.25rem; }
+  .contenido li { margin-bottom: 0.4rem; }
+  strong { font-weight: 600; color: var(--navy); }
+
+  code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.875em;
+    background: #E3E8F2;
+    color: var(--navy);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--navy);
+    color: #DDE4F5;
+    padding: 1.1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+    border-left: 4px solid var(--naranja);
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  blockquote {
+    border-left: 4px solid var(--naranja);
+    background: #FDF2E6;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1.25rem;
+    border-radius: 0 4px 4px 0;
+  }
+  blockquote p:last-child { margin-bottom: 0; }
+
+  .tabla-scroll { overflow-x: auto; margin-bottom: 1.25rem; -webkit-overflow-scrolling: touch; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 480px;
+    font-size: 0.9375rem;
+    background: var(--blanco);
+  }
+  th, td { padding: 0.7rem 0.85rem; text-align: left; border-bottom: 1px solid var(--linea); vertical-align: top; }
+  th {
+    font-family: Poppins, sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    background: var(--navy);
+    color: var(--blanco);
+  }
+  tbody tr:nth-child(even) { background: #F7F9FC; }
+
+  /* Demo en vivo del layout */
+  .demo {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    grid-template-areas: "d-cab" "d-menu" "d-main" "d-lat" "d-pie";
+    font-family: Poppins, sans-serif;
+    font-size: 0.8125rem;
+  }
+  .demo > div {
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 3px;
+    padding: 0.9rem 0.75rem;
+    text-align: center;
+    color: var(--tenue);
+  }
+  .d-cab  { grid-area: d-cab; background: var(--navy) !important; color: var(--blanco) !important; border-color: var(--navy) !important; }
+  .d-menu { grid-area: d-menu; }
+  .d-main { grid-area: d-main; background: #FDF2E6 !important; border-color: var(--naranja) !important; color: #8A4E10 !important; }
+  .d-lat  { grid-area: d-lat; }
+  .d-pie  { grid-area: d-pie; }
+
+  @media (min-width: 768px) {
+    .demo {
+      grid-template-columns: 130px 1fr;
+      grid-template-areas:
+        "d-cab  d-cab"
+        "d-menu d-main"
+        "d-menu d-lat"
+        "d-pie  d-pie";
+    }
+  }
+  @media (min-width: 1024px) {
+    .demo {
+      grid-template-columns: 130px 1fr 150px;
+      grid-template-areas:
+        "d-cab  d-cab  d-cab"
+        "d-menu d-main d-lat"
+        "d-pie  d-pie  d-pie";
+    }
+  }
+  .pie-demo { font-size: 0.875rem; color: var(--tenue); margin-bottom: 1.5rem; font-style: italic; }
+
+  /* Diagrama del modelo de caja */
+  .caja { max-width: 420px; margin-bottom: 1.25rem; font-family: Poppins, sans-serif; font-size: 0.8125rem; }
+  .caja .nivel { border: 1px dashed var(--tenue); padding: 0.5rem; position: relative; }
+  .caja .margen  { background: #EFF2F8; }
+  .caja .borde   { background: #D9DEE8; border-style: solid; border-color: var(--navy); }
+  .caja .relleno { background: #FDF2E6; border-color: var(--naranja); }
+  .caja .nucleo  { background: var(--navy); color: var(--blanco); border: 0; padding: 1.1rem; text-align: center; }
+  .caja .rotulo { display: block; color: var(--tenue); margin-bottom: 0.35rem; }
+
+  .lista-check { list-style: none; margin-left: 0 !important; }
+  .lista-check li { position: relative; padding-left: 1.6rem; }
+  .lista-check li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.55em;
+    width: 12px; height: 12px;
+    border: 2px solid var(--naranja);
+    border-radius: 2px;
+  }
+
+  a { color: var(--navy-claro); }
+  :focus-visible { outline: 3px solid var(--naranja); outline-offset: 2px; }
+
+  .pie {
+    background: var(--navy);
+    color: #8695BE;
+    padding: 2rem var(--paso);
+    font-family: Poppins, sans-serif;
+    font-size: 0.875rem;
+  }
+  .pie .interior { max-width: 1180px; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="interior">
+    <div class="regla"></div>
+    <h1>Maquetación de un sitio web</h1>
+    <p>Cómo se traduce un diseño a HTML y CSS que funcione en cualquier pantalla. Esta página está maquetada con las mismas técnicas que explica: cambiá el ancho de la ventana y mirá qué pasa.</p>
+    <div class="medidor" aria-live="polite">
+      <span id="bp-movil">móvil</span>
+      <span id="bp-tablet">tablet</span>
+      <span id="bp-escritorio">escritorio</span>
+      <span class="ancho" id="bp-ancho"></span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="indice">
+    <nav aria-label="Contenidos">
+      <h2>Contenidos</h2>
+      <ol>
+        <li><a href="#s1">Qué es maquetar</a></li>
+        <li><a href="#s2">Del diseño a la maqueta</a></li>
+        <li><a href="#s3">Estructura semántica</a></li>
+        <li><a href="#s4">El modelo de caja</a></li>
+        <li><a href="#s5">Cómo se acomodan las cajas</a></li>
+        <li><a href="#s6">Layout clásico</a></li>
+        <li><a href="#s7">Maquetación responsive</a></li>
+        <li><a href="#s8">Accesibilidad</a></li>
+        <li><a href="#s9">Errores frecuentes</a></li>
+        <li><a href="#s10">Checklist</a></li>
+        <li><a href="#s11">Actividad práctica</a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="contenido">
+
+    <section id="s1">
+      <h2>1. Qué es maquetar</h2>
+      <p>Maquetar es <strong>traducir un diseño visual a código HTML y CSS</strong> que el navegador pueda interpretar y mostrar correctamente en cualquier pantalla.</p>
+      <p>Conviene distinguir tres roles que muchas veces se confunden:</p>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>Etapa</th><th>Pregunta que responde</th><th>Herramienta típica</th></tr></thead>
+          <tbody>
+            <tr><td>Diseño</td><td>¿Cómo se ve?</td><td>Figma, Canva, Adobe XD</td></tr>
+            <tr><td><strong>Maquetación</strong></td><td>¿Cómo se construye lo que se ve?</td><td>HTML + CSS</td></tr>
+            <tr><td>Programación</td><td>¿Qué hace?</td><td>JavaScript, backend</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>La maqueta es la estructura estática y visual del sitio: todavía no tiene lógica ni datos dinámicos, pero ya se ve y se comporta como el producto final.</p>
+    </section>
+
+    <section id="s2">
+      <h2>2. Del diseño a la maqueta</h2>
+      <p>El flujo de trabajo habitual tiene tres instancias:</p>
+      <ol>
+        <li><strong>Wireframe:</strong> boceto en blanco y negro con bloques. Define qué va y dónde, sin colores ni tipografías.</li>
+        <li><strong>Mockup:</strong> el diseño terminado, con colores, imágenes y tipografías definitivas.</li>
+        <li><strong>Maqueta:</strong> el mockup convertido en HTML + CSS funcional y responsive.</li>
+      </ol>
+      <blockquote>
+        <p>Regla práctica: nunca empieces a escribir CSS sin tener claro el wireframe. Si no sabés qué bloques hay, vas a terminar acomodando cosas a fuerza de <code>margin</code> y parches.</p>
+      </blockquote>
+    </section>
+
+    <section id="s3">
+      <h2>3. Primer paso: la estructura semántica</h2>
+      <p>Antes del color y las medidas, se define el <strong>esqueleto HTML</strong>. Usamos etiquetas semánticas, que le dicen al navegador y a los lectores de pantalla qué significa cada bloque.</p>
+<pre><code>&lt;body&gt;
+  &lt;header&gt;                    &lt;!-- Encabezado: logo, título --&gt;
+    &lt;nav&gt;...&lt;/nav&gt;            &lt;!-- Navegación principal --&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;                      &lt;!-- Contenido principal, uno por página --&gt;
+    &lt;section&gt;                 &lt;!-- Bloque temático --&gt;
+      &lt;article&gt;...&lt;/article&gt;  &lt;!-- Contenido autónomo --&gt;
+    &lt;/section&gt;
+    &lt;aside&gt;...&lt;/aside&gt;        &lt;!-- Contenido complementario --&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;...&lt;/footer&gt;        &lt;!-- Pie: contacto, créditos --&gt;
+&lt;/body&gt;</code></pre>
+      <p><strong>Por qué importa:</strong> <code>&lt;div&gt;</code> no significa nada, <code>&lt;header&gt;</code> sí. Un sitio hecho todo con <code>div</code> funciona, pero es inaccesible, indexa peor y es más difícil de mantener.</p>
+    </section>
+
+    <section id="s4">
+      <h2>4. El modelo de caja</h2>
+      <p>Todo elemento HTML es una caja rectangular con cuatro capas, de afuera hacia adentro:</p>
+      <div class="caja">
+        <div class="nivel margen">
+          <span class="rotulo">margin — separa la caja de sus vecinas</span>
+          <div class="nivel borde">
+            <span class="rotulo">border — el borde</span>
+            <div class="nivel relleno">
+              <span class="rotulo">padding — espacio interno</span>
+              <div class="nucleo">contenido</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>Ajuste obligatorio al inicio de todo proyecto:</p>
+<pre><code>*, *::before, *::after {
+  box-sizing: border-box;   /* el width incluye padding y border */
+  margin: 0;
+  padding: 0;
+}</code></pre>
+      <p>Sin <code>border-box</code>, un elemento con <code>width: 300px</code> y <code>padding: 20px</code> mide en realidad 340&nbsp;px, y ahí empiezan los desbordes.</p>
+    </section>
+
+    <section id="s5">
+      <h2>5. Cómo se acomodan las cajas</h2>
+
+      <h3>5.1 Flujo normal</h3>
+      <p>Por defecto, los elementos <strong>de bloque</strong> (<code>div</code>, <code>p</code>, <code>section</code>) se apilan uno debajo del otro y ocupan todo el ancho. Los <strong>en línea</strong> (<code>span</code>, <code>a</code>, <code>strong</code>) se acomodan uno al lado del otro y solo ocupan lo que necesitan.</p>
+
+      <h3>5.2 Flexbox — una dimensión</h3>
+      <p>Sirve para distribuir elementos en <strong>una fila o una columna</strong>: barras de navegación, tarjetas alineadas, centrados.</p>
+<pre><code>.nav {
+  display: flex;
+  justify-content: space-between;  /* eje principal */
+  align-items: center;             /* eje cruzado */
+  gap: 1rem;                       /* separación entre hijos */
+}</code></pre>
+
+      <h3>5.3 Grid — dos dimensiones</h3>
+      <p>Sirve para el <strong>layout general de la página</strong>: filas y columnas al mismo tiempo.</p>
+<pre><code>.contenedor {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 columnas iguales */
+  gap: 1.5rem;
+}</code></pre>
+      <blockquote>
+        <p>Criterio de elección: <strong>Grid para la estructura de la página, Flexbox para el contenido dentro de cada bloque.</strong> No compiten, se combinan.</p>
+      </blockquote>
+    </section>
+
+    <section id="s6">
+      <h2>6. Ejemplo completo: layout clásico</h2>
+      <div class="demo">
+        <div class="d-cab">header</div>
+        <div class="d-menu">nav</div>
+        <div class="d-main">main</div>
+        <div class="d-lat">aside</div>
+        <div class="d-pie">footer</div>
+      </div>
+      <p class="pie-demo">Este bloque es real, no una imagen: se reordena solo en 768&nbsp;px y en 1024&nbsp;px.</p>
+<pre><code>&lt;div class="layout"&gt;
+  &lt;header class="cabecera"&gt;Encabezado&lt;/header&gt;
+  &lt;nav class="menu"&gt;Navegación&lt;/nav&gt;
+  &lt;main class="principal"&gt;Contenido&lt;/main&gt;
+  &lt;aside class="lateral"&gt;Barra lateral&lt;/aside&gt;
+  &lt;footer class="pie"&gt;Pie de página&lt;/footer&gt;
+&lt;/div&gt;</code></pre>
+<pre><code>.layout {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 200px 1fr 250px;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    "cabecera cabecera  cabecera"
+    "menu     principal lateral"
+    "menu     principal lateral"
+    "pie      pie       pie";
+  gap: 1rem;
+}
+
+.cabecera  { grid-area: cabecera; }
+.menu      { grid-area: menu; }
+.principal { grid-area: principal; }
+.lateral   { grid-area: lateral; }
+.pie       { grid-area: pie; }</code></pre>
+      <p>La propiedad <code>grid-template-areas</code> permite <strong>dibujar el layout dentro del CSS</strong>: se lee igual que se ve en pantalla.</p>
+    </section>
+
+    <section id="s7">
+      <h2>7. Maquetación responsive</h2>
+      <p>Un sitio tiene que funcionar en celular, tablet y escritorio.</p>
+
+      <h3>Mobile first</h3>
+      <p>Se escribe primero el CSS para pantallas chicas y después se agregan reglas para pantallas grandes. Es más simple agregar complejidad que sacarla.</p>
+<pre><code>/* Base: celular */
+.layout {
+  display: grid;
+  grid-template-areas:
+    "cabecera"
+    "menu"
+    "principal"
+    "lateral"
+    "pie";
+}
+
+/* Tablet en adelante */
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 200px 1fr;
+    grid-template-areas:
+      "cabecera  cabecera"
+      "menu      principal"
+      "menu      lateral"
+      "pie       pie";
+  }
+}
+
+/* Escritorio */
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 200px 1fr 250px;
+  }
+}</code></pre>
+
+      <h3>Etiqueta obligatoria en el head</h3>
+      <p>Sin esto, el celular simula una pantalla de escritorio y las media queries no funcionan:</p>
+<pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></pre>
+
+      <h3>Unidades</h3>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>Unidad</th><th>Relativa a</th><th>Uso recomendado</th></tr></thead>
+          <tbody>
+            <tr><td><code>rem</code></td><td>tamaño de fuente raíz</td><td>tipografía, espaciados, breakpoints</td></tr>
+            <tr><td><code>em</code></td><td>fuente del propio elemento</td><td>espaciados internos de un componente</td></tr>
+            <tr><td><code>fr</code></td><td>fracción del espacio libre</td><td>columnas en Grid</td></tr>
+            <tr><td><code>vw</code> / <code>vh</code></td><td>ancho / alto de la ventana</td><td>secciones a pantalla completa</td></tr>
+            <tr><td><code>ch</code></td><td>ancho del carácter «0»</td><td>longitud de línea de lectura</td></tr>
+            <tr><td><code>%</code></td><td><strong>el contenedor padre</strong></td><td>imágenes fluidas y poco más</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Por qué el porcentaje no alcanza</h3>
+      <p>Es un error común pensar que maquetar con <code>%</code> es lo mismo que maquetar responsive. No lo es, y conviene entender por qué antes de usarlo.</p>
+      <ol>
+        <li><strong>Se calcula sobre el padre, no sobre la pantalla.</strong> Si el contenedor padre no tiene un ancho definido, el porcentaje del hijo no resuelve nada. Una cadena de porcentajes anidados se vuelve imposible de rastrear.</li>
+        <li><strong>No define puntos de quiebre.</strong> Una columna con <code>width: 33%</code> sigue midiendo el 33&nbsp;% en un celular de 360&nbsp;px: son 120&nbsp;px, ilegibles. El porcentaje escala, pero nunca reordena, y reordenar es justamente lo que necesita el diseño responsive.</li>
+        <li><strong>Los márgenes y rellenos verticales se calculan sobre el ancho.</strong> Es la trampa más frecuente.</li>
+        <li><strong>No sirve para tipografía.</strong> <code>font-size</code> en <code>%</code> hereda en cascada y se multiplica: dos elementos anidados al 90&nbsp;% terminan en 81&nbsp;%. Para texto se usa <code>rem</code>.</li>
+      </ol>
+<pre><code>/* Comportamiento contraintuitivo */
+.caja { padding-top: 10%; }   /* padre de 800px de ancho → 80px arriba */</code></pre>
+
+      <h3>Qué usar en su lugar</h3>
+      <p>Para columnas, <code>fr</code> con <code>minmax()</code> reparte el espacio y además impide que un bloque se achique más allá de lo legible:</p>
+<pre><code>.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}</code></pre>
+      <p>Esa sola línea acomoda tres tarjetas en escritorio, dos en tablet y una en celular, sin escribir ni una media query.</p>
+      <p>Para tamaños que necesitan escalar de forma continua, <code>clamp()</code> define mínimo, valor preferido y máximo:</p>
+<pre><code>h1 { font-size: clamp(1.75rem, 5vw, 2.75rem); }
+.contenedor { padding: clamp(1rem, 3vw, 1.5rem); }</code></pre>
+      <p>Para el ancho de lectura, <code>ch</code> junto a <code>max-width</code> es más preciso que cualquier porcentaje:</p>
+<pre><code>p { max-width: 70ch; }   /* corta la línea en ~70 caracteres */</code></pre>
+
+      <h3>Dónde el porcentaje sí es la herramienta correcta</h3>
+<pre><code>img { max-width: 100%; height: auto; }   /* imagen fluida: técnica estándar */
+input, table { width: 100%; }            /* ocupar el ancho del padre */</code></pre>
+      <p>En esos casos el padre siempre tiene un ancho conocido y lo único que se busca es «no te pases del contenedor». Ahí el porcentaje es exacto y no hay reemplazo mejor.</p>
+      <blockquote>
+        <p><code>%</code> es una unidad de <strong>proporción</strong>, no una técnica de diseño adaptativo. El responsive lo hacen las media queries, <code>fr</code> con <code>minmax()</code>, <code>clamp()</code> y <code>rem</code>. El porcentaje acompaña, no conduce.</p>
+      </blockquote>
+
+      <h3>Imágenes fluidas</h3>
+<pre><code>img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}</code></pre>
+    </section>
+
+    <section id="s8">
+      <h2>8. Accesibilidad y buenas prácticas</h2>
+      <ul>
+        <li>Un solo <code>&lt;h1&gt;</code> por página, y jerarquía de títulos sin saltos.</li>
+        <li><code>alt</code> descriptivo en todas las imágenes con contenido.</li>
+        <li>Contraste mínimo de 4.5:1 entre texto y fondo.</li>
+        <li>Nombres de clases con significado: <code>.tarjeta-producto</code>, no <code>.caja-azul-2</code>.</li>
+        <li>CSS en archivo externo, nunca estilos en línea.</li>
+        <li>Áreas clicables de al menos 44×44&nbsp;px en móvil.</li>
+        <li>Foco visible al navegar con teclado.</li>
+      </ul>
+    </section>
+
+    <section id="s9">
+      <h2>9. Errores frecuentes</h2>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>Error</th><th>Consecuencia</th><th>Solución</th></tr></thead>
+          <tbody>
+            <tr><td><code>position: absolute</code> para todo el layout</td><td>Se rompe en cualquier otra pantalla</td><td>Grid o Flexbox</td></tr>
+            <tr><td>Anchos fijos en píxeles</td><td>Scroll horizontal en celular</td><td><code>%</code>, <code>fr</code>, <code>max-width</code></td></tr>
+            <tr><td>Olvidar el <code>meta viewport</code></td><td>El responsive no se aplica</td><td>Agregarlo al <code>head</code></td></tr>
+            <tr><td>Sopa de <code>div</code></td><td>Sitio inaccesible y difícil de mantener</td><td>Etiquetas semánticas</td></tr>
+            <tr><td>Maquetar con tablas</td><td>Práctica obsoleta desde 2005</td><td>Grid</td></tr>
+            <tr><td>No reiniciar márgenes del navegador</td><td>Diferencias entre navegadores</td><td>Reset o normalize</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="s10">
+      <h2>10. Checklist de una maqueta terminada</h2>
+      <ul class="lista-check">
+        <li>Estructura semántica correcta.</li>
+        <li>HTML y CSS validados en validator.w3.org.</li>
+        <li><code>meta viewport</code> presente.</li>
+        <li>Se ve bien en 360&nbsp;px, 768&nbsp;px y 1280&nbsp;px de ancho.</li>
+        <li>Sin scroll horizontal en ninguna resolución.</li>
+        <li>Todas las imágenes con <code>alt</code>.</li>
+        <li>Contraste y jerarquía tipográfica coherentes.</li>
+        <li>CSS externo y organizado.</li>
+      </ul>
+    </section>
+
+    <section id="s11">
+      <h2>11. Actividad práctica</h2>
+      <p><strong>Consigna:</strong> a partir del wireframe entregado, maquetar una página de inicio con encabezado, menú de navegación, sección de tres tarjetas, barra lateral y pie.</p>
+      <h3>Requisitos técnicos</h3>
+      <ul>
+        <li>Grid para el layout general y Flexbox para las tarjetas.</li>
+        <li>Tres breakpoints (360, 768 y 1024&nbsp;px), con enfoque mobile first.</li>
+        <li>HTML semántico, sin <code>div</code> innecesarios.</li>
+        <li>Un único archivo <code>estilos.css</code> externo.</li>
+        <li>Sin frameworks: nada de Bootstrap ni Tailwind.</li>
+      </ul>
+      <p><strong>Entrega:</strong> repositorio de GitHub con historial de commits que muestre el proceso, más capturas de las tres resoluciones.</p>
+    </section>
+
+  </main>
+</div>
+
+<footer class="pie">
+  <div class="interior">
+    Tecnicatura en Análisis y Desarrollo de Software — Material de cátedra
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var movil = document.getElementById('bp-movil');
+    var tablet = document.getElementById('bp-tablet');
+    var escritorio = document.getElementById('bp-escritorio');
+    var ancho = document.getElementById('bp-ancho');
+
+    function actualizar() {
+      var w = window.innerWidth;
+      movil.classList.toggle('activo', w < 768);
+      tablet.classList.toggle('activo', w >= 768 && w < 1024);
+      escritorio.classList.toggle('activo', w >= 1024);
+      ancho.textContent = w + 'px';
+    }
+
+    actualizar();
+    window.addEventListener('resize', actualizar);
+  })();
+</script>
+
+</body>
+</html>
