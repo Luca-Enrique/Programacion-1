@@ -5,9 +5,9 @@ from config import DB_PASSWORD, DB_USER, DB_HOST
 # Conexion con MySql
 try:
     conexion = mysql.connector.connect(
-        host     = 'DB_HOST',
-        user     = 'DB_USER',
-        password = 'DB_PASSWORD',
+        host     = DB_HOST,
+        user     = DB_USER,
+        password = DB_PASSWORD,
         database = 'biblioteca'
 
     )
