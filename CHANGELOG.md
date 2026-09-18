@@ -1,6 +1,28 @@
 # Changelog
 ---
 
+## [v1.5.0] - 2026-09-18
+
+#### Features
+
+- Agrego `Fundamentos Web/Maquetación Web`: carpeta con `maquetacion_web.html` (apunte completo de maquetación de sitios web) y `actividad_base_alumno.html` (actividad base tipo landing para completar, con carrusel y acordeón de Bootstrap 5)
+- Agrego la carpeta `img/` (`html.png`, `css.png`, `bootstrap.png`) con las imágenes usadas por la actividad base
+
+#### Chore
+
+- Agrego `Conexiones/MySql/.env.example` como plantilla de credenciales y convierto `config.py` en un loader que lee el archivo `.env`; ahora el archivo `.env` es el excluido de Git en lugar de `config.py`
+
+#### Fixes
+
+- Corrijo en `conexionMysql.py` las credenciales que se pasaban como strings literales (`'DB_HOST'`, `'DB_USER'`, `'DB_PASSWORD'`); ahora se usan las variables reales importadas de `config.py`
+
+#### Docs
+
+- Creo `INDICE.md` con el catálogo completo de archivos
+- Reescribo `README.md` como README estándar de proyecto (documentación, instalación, configuración de MySQL y estructura)
+
+---
+
 ## [v1.4.0] - 2026-08-28
 
 #### Features
